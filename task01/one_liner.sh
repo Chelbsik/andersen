@@ -25,17 +25,19 @@ fi
 
 echo '-----------------------------------------------------'
 
-MEAT_PART=$(netstat -$CON_STATE | awk '/'$PROC_NAME'/ {print $5}' | cut -d: -f1 | sort | uniq -c | sort | tail -n5 | grep -oP '(\d+\.){3}\d+')
-[ -z "$MEAT_PART" ] && echo "Sorry, no connections" && exit 1
+ALL_CON=$(netstat -$CON_STATE | awk '/'$PROC_NAME'/ {print $5}' | cut -d: -f1)
+MOST_CON_SORT=$(echo "$ALL_CON" | sort | uniq -c | sort)
+FIVE_MOST_CON=$(echo "$MOST_CON_SORT" | tail -n5 | grep -oP '(\d+\.){3}\d+')
+[ -z "$FIVE_MOST_CON" ] && echo "Sorry, no connections" && exit 1
 
-echo "$MEAT_PART" | while read IP 
+echo "$FIVE_MOST_CON" | while read IP 
 do
    whois $IP | awk -F':' '/^Organization/ || /^Address/ || /^City/ || /^Country/ {print $0}'
 done
 
 echo '-----------------------------------------------------'
 
-echo "$MEAT_PART" | while read IP
+echo "$FIVE_MOST_CON" | while read IP
 do
    whois $IP | awk -F':' '/^Organization/ {print $2}'
 done | sort | uniq -c |
