@@ -30,14 +30,7 @@ CUT_ALL_CON=$(echo "$ALL_CON_LINES" | sed 's/\([^ ]* *\)\{4\}\([^ ]* *\)[^ ]* */
 MOST_CON_SORT=$(echo "$CUT_ALL_CON" | sed 's/:.*//' | sort | uniq -c | sort)
 FIVE_MOST_CON=$(echo "$MOST_CON_SORT" | tail -n5 | sed 's/ *[^ ] //')
 [ -z "$FIVE_MOST_CON" ] && echo "Sorry, no connections" && exit 1
-echo "$ALL_CON_LINES"
-echo +
-echo "$CUT_ALL_CON"
-echo ++
-echo "$MOST_CON_SORT"
-echo +++
-echo "$FIVE_MOST_CON"
-echo ++++
+
 echo "$FIVE_MOST_CON" | while read IP
 do
    whois $IP | awk -F':' '/^Organization/ || /^Address/ || /^City/ || /^Country/ {print $0}'
