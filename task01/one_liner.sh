@@ -2,8 +2,11 @@
 
 echo "Process name or ID:"
 read PROC_NAME
-PROC_NAME_CHECK=$(netstat -tunapl | awk '/'$PROC_NAME'/ {print $5}' )
-[ -z "$PROC_NAME" ] || [[ ! $PROC_NAME_CHECK =~ [:digit:] ]] && echo "Error: Wrong process name/ID" && exit 1
+[ -z "$PROC_NAME" ] && echo "Error: Empty process name/ID" && exit 1
+
+PROC_NAME_CHECK=$(netstat -tunapl | awk '/[\/]'$PROC_NAME'/ {print $5}')
+PROC_ID_CHECK=$(netstat -tunapl | awk '/'$PROC_NAME'[\/]/ {print $5}')
+[ -z "$PROC_NAME_CHECK" ] && [ -z "$PROC_ID_CHECK" ] && echo "Error: Wrong process name/ID" && exit 1
 
 echo "Connection state: 1 - TCP, 2 - UDP"
 read CON_STATE
