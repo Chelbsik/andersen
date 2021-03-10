@@ -3,11 +3,23 @@
 DATE_VAL_TUPLE=$(jq '.prices[][0] |= ( . /1000 | strftime("%Y-%b-%d"))' quotes.json | 
 jq -c '.prices[]')
 
+ALL_MON=$(printf "%02d/01/2000\n" {1..12} | LC_ALL=C date +%b -f-)
+
 VOL () {
 # default values
 [ -z $1 ] && START_YEAR='2015' || START_YEAR=$1
 [ -z $2 ] && END_YEAR='2021' || END_YEAR=$2
 [ -z $3 ] && MONTH='Feb' || MONTH=$3
+
+# check Month format
+CHECK=$(echo "$ALL_MON" | grep $MONTH)
+if [ -z $CHECK ]
+then
+   echo "Error: month must be specified in abbreviate format. Examle: Feb, Jan, Mar.s" > /dev/stderr
+   exit 1
+else 
+   MONTH=$(echo "$CHECK" | head -1)
+fi
 
 [[ $START_YEAR < '2015' ]] && echo "Error: year must start from 2015" > /dev/stderr && exit 1
 [[ $END_YEAR > '2021' ]] && echo "Error: year must end at 2021" > /dev/stderr && exit 1
