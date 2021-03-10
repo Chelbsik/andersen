@@ -1,5 +1,5 @@
 #!/bin/bash
-
+curl -s https://yandex.ru/news/quotes/graph_2000.json > ./quotes.json
 DATE_VAL_TUPLE=$(jq '.prices[][0] |= ( . /1000 | strftime("%Y-%b-%d"))' quotes.json | 
 jq -c '.prices[]')
 
