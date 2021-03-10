@@ -127,7 +127,7 @@ echo '-----------------------------------------------------'
 
 echo "$FIVE_MOST_CON" | while read IP 
 do
-   whois $IP | awk -F':' '/^Organization/ || /^Address/ || /^City/ || /^Country/ {print $0}'
+   whois $IP | awk -F':' '/^Organization/ || /^Netname/ || /^netname/ {print $0}'
 done
 
 echo '-----------------------------------------------------'
