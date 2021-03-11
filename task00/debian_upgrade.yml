@@ -1,0 +1,9 @@
+---
+- name: Debian 7 to 10 upgrade
+  hosts: all
+  become: yes
+  ignore_errors: yes
+  roles:
+    - debian_upgrade
+
+ 

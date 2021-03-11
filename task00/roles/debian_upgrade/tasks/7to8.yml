@@ -1,0 +1,24 @@
+---
+- setup: filter="ansible_distribution_major_version"
+
+- block:
+
+    - include_vars: jessie.yml
+ 
+    - template: 
+        src=sources.list.j2 
+        dest=/etc/apt/sources.list
+
+    - apt:
+        update_cache=yes
+        upgrade=yes
+        upgrade=dist
+        force=yes
+  
+    - shell: sleep 3 && reboot now
+      async: 1
+      poll: 0
+
+    - pause: seconds=15
+
+  when: ansible_distribution_major_version == '7'
