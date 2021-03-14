@@ -10,7 +10,7 @@ This playbook deploys Flask service for having some fun with emoji:
     - disable UsePAM;
     - enable Pubkey authentication (it is actually enable by default, but you can never be too self-confident).
 
-## after deployment
+## After deployment
 ```
 You can send POST or GET request with name of my favorite emoji and receive strange string back.
 For more detailed instruction look at http://yourserveraddress:80/ after successfull deploy.
@@ -36,7 +36,7 @@ For host machine:
 - don't forget to clone the repository and set your target server address in /inventory/hosts.yml
 ```
 
-# Deploying the app
+## Deploying the app
 Run the deploy playbook
 ```
  ansible-playbook emoji_service.yml
