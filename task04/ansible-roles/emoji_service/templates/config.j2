@@ -1,0 +1,62 @@
+from flask import Flask, request
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return """Hello there!\n
+    Welcome to my homework project.
+    You can send POST or GET JSON requests and receive some strange decorated-with-emojis string.
+    You can do it via "curl" or use an "postman" application (postman.com/downloads/)
+
+    If you are using postman, do it like this:
+        POST http://yourserveraddres
+        Body
+        raw JSON
+        {
+            "word": "facepalm",
+            "count": 5
+        }
+
+    And here is an example of request via "curl":
+    curl -H 'Content-type: application/json' -d '{"word": "facepalm", "count": 5}' -X POST http://yourserveraddres
+    Remember:
+        1) There is only two parameters, both must be specified: "word" (name of emoji) and "count" (number of emoji);
+        2) "Word" can be either "facepalm" or "grimace". If you love different emojis - well, sorry, these are my favorites, not yours.
+        3) "Count" can only be integer number more than a zero. Well, try zero, if you wish. I warned you.
+
+    Have fun!"""
+    
+@app.route('/', methods=['POST', 'GET'])
+def json_example():
+    request_data = request.get_json()
+
+    emoji_name = request_data['word']
+    
+    if request_data:
+        if 'word' in request_data and request_data['word'] == 'facepalm':
+            emoji = '🤦‍♂️'
+        elif 'word' in request_data and request_data['word'] == 'grimace':
+            emoji = '😬'
+        else:
+            emoji = '🤬'
+            emoji_name = 'ERROR: Wrong emoji name (use "facepalm" or "grimace")'
+
+        if 'count' in request_data and emoji != '🤬':
+            numerator = request_data['count']
+        else:
+            numerator = 1
+
+        i = 0
+        s = emoji + emoji_name
+        s1 = ''
+
+        while i < numerator:
+                s1 += s
+                i += 1
+        
+        answer = s1 + emoji
+    return answer
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80)

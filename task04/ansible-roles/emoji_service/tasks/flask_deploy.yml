@@ -1,0 +1,23 @@
+---
+- name: make app dir
+  file:
+    name: /var/www/flask/emoji
+    state: directory
+
+- name: copy app
+  template:
+    src: config.j2
+    dest: /var/www/flask/emoji/flask_emoji.py
+
+- name: copy service
+  template:
+    src: service.j2
+    dest: /etc/systemd/system/flask_emoji.service
+
+- name: start flask_emoji
+  systemd:
+    daemon_reload: yes
+    name: flask_emoji
+    state: started
+    enabled: yes 
+

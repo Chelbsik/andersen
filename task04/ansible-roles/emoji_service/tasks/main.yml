@@ -1,0 +1,7 @@
+---
+- include_tasks: env_prep.yml
+
+- include_tasks: flask_deploy.yml
+
+- include_tasks: securify.yml
+

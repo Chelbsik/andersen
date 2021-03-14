@@ -1,0 +1,9 @@
+---
+- name: Emoji service
+  hosts: 
+    - debian_hosts
+  # become: yes
+  roles:
+    - emoji_service
+
+ 

@@ -1,0 +1,17 @@
+---
+
+- name: Python3 installation
+  apt:
+    update_cache: yes
+    name: "{{ item }}" 
+    state: present
+  loop:
+    - python3
+    - python3-pip
+    - python-pip
+
+- name: Flask installation
+  pip:
+    name: Flask
+    state: present
+    executable: pip3

@@ -1,0 +1,51 @@
+---
+- name: Allow tcp connections on ports 22, 80, 443
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: "{{ item }}"
+    jump: ACCEPT
+  loop:
+    - 22
+    - 80
+    - 443
+
+- name: Allow udp connections on ports 22, 80, 443
+  iptables:
+    chain: INPUT
+    protocol: udp
+    destination_port: "{{ item }}"
+    jump: ACCEPT
+  loop:
+    - 22
+    - 80
+    - 443
+
+- name: Block connections to all ports
+  iptables:
+    chain: INPUT
+    policy: DROP
+
+- name: Disable root login over SSH
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin no"
+    state: present
+  notify:
+    - restart sshd
+
+- name: Disable PAM authentication
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^UsePAM"
+    line: "UsePAM no"
+    state: present
+
+- name: Enable Public key authentication
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PubkeyAuthentication"
+    line: "PubkeyAuthentication yes"
+    state: present
+

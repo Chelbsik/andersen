@@ -1,0 +1,15 @@
+[Unit]
+Description=flask-emoji service
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+User=root
+WorkingDirectory=/var/www/flask/emoji
+Environment=FLASK_APP=/var/www/flask/emoji/flask_emoji.py
+ExecStart=flask run --host=0.0.0.0 --port=80
+
+
+[Install]
+WantedBy=multi-user.target
